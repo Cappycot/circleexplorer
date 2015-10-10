@@ -22,6 +22,10 @@ public class Grouping {
 	public int getCluster() {
 		return cluster;
 	}
+	
+	public int getTotal() {
+		return size * cluster;
+	}
 
 	public void incSize(int inc) {
 		size += inc;
@@ -33,5 +37,10 @@ public class Grouping {
 		cluster += inc;
 		if (cluster < 1)
 			cluster = 1;
+	}
+
+	public void conform(Grouping group) {
+		this.size = group.size;
+		this.cluster = group.cluster;
 	}
 }
