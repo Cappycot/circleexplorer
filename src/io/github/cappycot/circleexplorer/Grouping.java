@@ -81,13 +81,10 @@ public class Grouping {
 		} else if (this.cluster == group.cluster) {
 			this.size += group.size;
 			return null;
-		}
-		group.rotate();
-		if (this.cluster == group.cluster) {
+		} else if (this.cluster == group.rotate().cluster) {
 			this.size += group.size;
 			return null;
 		}
-		
 		this.size += group.getTotal() / this.cluster;
 		group = new Grouping(1, group.getTotal() % this.cluster);
 		return group;
