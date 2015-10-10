@@ -10,6 +10,11 @@ public class Grouping {
 		this.cluster = cluster;
 	}
 
+	public Grouping(Grouping group) {
+		this.size = group.size;
+		this.cluster = group.cluster;
+	}
+
 	public int getSize() {
 		return size;
 	}
