@@ -21,7 +21,7 @@ public abstract class DontEvenPanel extends JPanel implements MouseListener,
 	public DontEvenPanel() {
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		Timer t = new Timer(100, this);
+		Timer t = new Timer(10, this);
 		t.start();
 	}
 
