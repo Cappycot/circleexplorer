@@ -69,7 +69,9 @@ public class RenderGroup extends Grouping {
 		}
 		// Collections.shuffle(holder);
 		while (holder.size() > getTotal()) {
-			mp.kill(holder.remove(holder.size() - 1), color);
+			Circle toKill = holder.remove(holder.size() - 1);
+			if (mp != null)
+				mp.kill(toKill, color);
 		}
 		circles = new ArrayList<ArrayList<Circle>>(size);
 		for (int i = 0; i < size; i++) {
@@ -136,26 +138,40 @@ public class RenderGroup extends Grouping {
 			circles.get(i).addAll(holder);
 		}
 		mp.kill(group);
-		reset(mp);
+		reset(null);
 	}
 
 	public RenderGroup append(RenderGroup group, MainPanel mp, double mx,
 			double my) {
 		Grouping extra = super.append(group);
+		ArrayList<Circle> holder = new ArrayList<Circle>(group.getTotal());
+		for (ArrayList<Circle> cg : group.circles)
+			holder.addAll(cg);
+		for (int i = 0; i < group.circles.size()
+				&& (int) (holder.size() / getCluster()) > 0; i++) {
+			ArrayList<Circle> cg = group.circles.get(i);
+			for (int j = 0; j < cg.size()
+					&& (int) (holder.size() / getCluster()) > 0; j++) {
+				circles.get(circles.size() - 1).add(holder.remove(0));
+			}
+		}
+		group.circles.clear();
 		mp.kill(group);
-		reset(mp);
+		reset(null);
 		if (extra == null)
 			return null;
-		return new RenderGroup(extra, mx, my);
+		// group = new RenderGroup(extra, mx, my);
+		group.conform(extra);
+		group.circles = new ArrayList<ArrayList<Circle>>(1);
+		group.circles.add(holder);
+		group.reset(null);
+		return group;
 	}
 
 	public ArrayList<Circle> kill() {
 		ArrayList<Circle> holder = new ArrayList<Circle>(getTotal());
 		for (ArrayList<Circle> cg : circles)
 			holder.addAll(cg);
-		while (holder.size() < getTotal()) {
-			holder.add(new Circle(x, y));
-		}
 		circles = null;
 		return holder;
 	}

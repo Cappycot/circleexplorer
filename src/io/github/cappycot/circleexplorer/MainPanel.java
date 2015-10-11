@@ -82,8 +82,12 @@ public class MainPanel extends DontEvenPanel {
 			break;
 		case MouseEvent.BUTTON3:
 			if (holding == null) {
-				groups.add(new RenderGroup(1, 1, toProportion(mouseX),
-						toProportion(mouseY)));
+				if (selected != null) {
+					kill(selected);
+				} else {
+					groups.add(new RenderGroup(1, 1, toProportion(mouseX),
+							toProportion(mouseY)));
+				}
 			}
 			break;
 		}
