@@ -42,10 +42,10 @@ public class RenderGroup extends Grouping {
 	}
 
 	public void init() {
-		color = new Color(RANDOM.nextInt(128) + 32, RANDOM.nextInt(128) + 64,
+		color = new Color(RANDOM.nextInt(96) + 32, RANDOM.nextInt(128) + 128,
 				RANDOM.nextInt(128) + 128);
-		highlight = new Color(RANDOM.nextInt(128) + 64,
-				RANDOM.nextInt(128) + 128, RANDOM.nextInt(128) + 32);
+		highlight = new Color(RANDOM.nextInt(128) + 128,
+				RANDOM.nextInt(96) + 32, RANDOM.nextInt(96) + 32);
 		int size = getSize();
 		int cluster = getCluster();
 		circles = new ArrayList<ArrayList<Circle>>(size);
