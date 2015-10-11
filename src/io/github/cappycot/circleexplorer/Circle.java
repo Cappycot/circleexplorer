@@ -9,6 +9,12 @@ public class Circle {
 	/* Instance Variables */
 	private double x;
 	private double y;
+	
+	/* Constructor */
+	public Circle(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
 
 	/* Getters */
 	public double getX() {
