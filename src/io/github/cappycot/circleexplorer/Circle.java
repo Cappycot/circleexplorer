@@ -10,10 +10,15 @@ public class Circle {
 	private double x;
 	private double y;
 	
-	/* Constructor */
+	/* Constructors */
 	public Circle(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Circle(Circle circle) {
+		this.x = circle.x;
+		this.y = circle.y;
 	}
 
 	/* Getters */
