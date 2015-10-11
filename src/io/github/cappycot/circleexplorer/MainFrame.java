@@ -18,6 +18,7 @@ public class MainFrame extends JFrame {
 	private JPanel contentPane;
 
 	public MainFrame() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/javax/swing/plaf/metal/icons/ocean/computer.gif")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		double xScr = d.getWidth();

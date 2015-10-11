@@ -14,10 +14,10 @@ import java.util.Random;
  */
 public class RenderGroup extends Grouping {
 	/* Global Variables */
-	public static final double MAX_SPEED = 0.096;
-	public static final double MIN_SPEED = 0.004;
+	public static final double MAX_SPEED = 0.095;
+	public static final double MIN_SPEED = 0.005;
 	public static final Random RANDOM = new Random();
-	public static final double RADIUS = 0.02;
+	public static final double RADIUS = 0.025;
 	/* Instance Variables */
 	private double x; // x-coordinate of center
 	private double y; // y-coordinate of center
