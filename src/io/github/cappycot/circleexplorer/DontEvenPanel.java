@@ -26,10 +26,6 @@ public abstract class DontEvenPanel extends JPanel implements MouseListener,
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-	}
-
-	@Override
 	public void mouseEntered(MouseEvent arg0) {
 	}
 

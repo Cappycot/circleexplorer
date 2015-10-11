@@ -66,17 +66,8 @@ public class MainPanel extends DontEvenPanel {
 
 	@Override
 	public void mousePressed(MouseEvent m) {
-		switch (m.getButton()) {
-		case MouseEvent.BUTTON1:
+		if (m.getButton() == MouseEvent.BUTTON1)
 			mousePress = true;
-			break;
-		case MouseEvent.BUTTON2:
-			mouseSplit = true;
-			break;
-		case MouseEvent.BUTTON3:
-			mouseNew = true;
-			break;
-		}
 		repaint();
 	}
 
@@ -84,6 +75,10 @@ public class MainPanel extends DontEvenPanel {
 	public void mouseReleased(MouseEvent m) {
 		mousePress = false;
 		repaint();
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent m) {
 	}
 
 	@Override
@@ -155,7 +150,7 @@ public class MainPanel extends DontEvenPanel {
 			if (holding != null) {
 				if (selected != null) {
 					if (outer) {
-						
+
 					} else {
 						selected.merge(holding, this);
 					}
