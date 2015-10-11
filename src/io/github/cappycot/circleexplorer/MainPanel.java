@@ -23,8 +23,6 @@ public class MainPanel extends DontEvenPanel {
 	/* Instance Variables */
 	private volatile boolean timerPaint = false;
 	private volatile boolean mousePress = false;
-	private volatile boolean mouseNew = false;
-	private volatile boolean mouseSplit = false;
 	private volatile double mouseX = 0.0;
 	private volatile double mouseY = 0.0;
 	/* Operation Variables */
@@ -58,6 +56,7 @@ public class MainPanel extends DontEvenPanel {
 		Collections.sort(groups);
 	}
 
+	/* Action Listeners */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		timerPaint = true;
@@ -73,12 +72,22 @@ public class MainPanel extends DontEvenPanel {
 
 	@Override
 	public void mouseReleased(MouseEvent m) {
-		mousePress = false;
+		switch (m.getButton()) {
+		case MouseEvent.BUTTON1:
+			mousePress = false;
+			break;
+		case MouseEvent.BUTTON2:
+			if (selected != null)
+				selected.rotate();
+			break;
+		case MouseEvent.BUTTON3:
+			if (holding == null) {
+				groups.add(new RenderGroup(1, 1, toProportion(mouseX),
+						toProportion(mouseY)));
+			}
+			break;
+		}
 		repaint();
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent m) {
 	}
 
 	@Override
@@ -105,7 +114,6 @@ public class MainPanel extends DontEvenPanel {
 	}
 
 	/* RenderGroup Functions */
-
 	public void kill(Circle c, Color color) {
 		graveyard.add(c);
 		gravecolors.add(color);
