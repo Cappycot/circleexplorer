@@ -1,6 +1,6 @@
 package io.github.cappycot.circleexplorer;
 
-public class Grouping {
+public class Grouping implements Comparable<Grouping> {
 	/* Instance Variables */
 	private int size = 1;
 	private int cluster = 1;
@@ -30,24 +30,21 @@ public class Grouping {
 	}
 
 	/* Setters */
-	public Grouping incSize(int inc) {
+	public void incSize(int inc) {
 		size += inc;
 		if (size < 1)
 			size = 1;
-		return this;
 	}
 
-	public Grouping incCluster(int inc) {
+	public void incCluster(int inc) {
 		cluster += inc;
 		if (cluster < 1)
 			cluster = 1;
-		return this;
 	}
 
-	public Grouping conform(Grouping group) {
+	public void conform(Grouping group) {
 		this.size = group.size;
 		this.cluster = group.cluster;
-		return this;
 	}
 
 	/* Operations */
@@ -88,5 +85,10 @@ public class Grouping {
 		this.size += group.getTotal() / this.cluster;
 		group = new Grouping(1, group.getTotal() % this.cluster);
 		return group;
+	}
+
+	@Override
+	public int compareTo(Grouping group) {
+		return group.getTotal() - this.getTotal();
 	}
 }
