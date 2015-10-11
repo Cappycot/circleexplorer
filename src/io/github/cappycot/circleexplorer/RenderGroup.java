@@ -5,6 +5,7 @@ import static io.github.cappycot.circleexplorer.MainPanel.toPixels;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Random;
  */
 public class RenderGroup extends Grouping {
 	/* Global Variables */
-	public static final double MAX_SPEED = 0.099;
+	public static final double MAX_SPEED = 0.049;
 	public static final double MIN_SPEED = 0.001;
 	public static final Random RANDOM = new Random();
 	public static final double RADIUS = 0.02;
@@ -48,12 +49,46 @@ public class RenderGroup extends Grouping {
 		for (int i = 0; i < size; i++) {
 			ArrayList<Circle> group = new ArrayList<Circle>(cluster);
 			for (int j = 0; j < cluster; j++) {
-				group.add(new Circle(0, 0));
+				group.add(new Circle(x, y));
 			}
 			circles.add(group);
 		}
 	}
-
+	
+	public void reset() {
+		int size = getSize();
+		int cluster = getCluster();
+		ArrayList<Circle> holder = new ArrayList<Circle>(getTotal());
+		for (ArrayList<Circle> cg : circles)
+			holder.addAll(cg);
+		while (holder.size() < getTotal()) {
+			holder.add(new Circle(x, y));
+		}
+		Collections.shuffle(holder, RANDOM);
+		while (holder.size() > getTotal()) {
+			holder.remove(0);
+		}
+		circles = new ArrayList<ArrayList<Circle>>(size);
+		for (int i = 0; i < size; i++) {
+			ArrayList<Circle> group = new ArrayList<Circle>(cluster);
+			for (int j = 0; j < cluster; j++) {
+				group.add(holder.remove(0));
+			}
+			circles.add(group);
+		}
+	}
+	/* Operation Methods */
+	public void move(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Grouping rotate() {
+		super.rotate();
+		reset();
+		return this;
+	}
+	/* Graphics Methods */
 	/**
 	 * 
 	 * @param g
@@ -65,16 +100,18 @@ public class RenderGroup extends Grouping {
 	 * @param scale
 	 *            1.0 to width
 	 */
-	public void draw(Graphics g, double x, double y, boolean move) {
-
+	public void draw(Graphics g, double x, double y, boolean move,
+			boolean center) {
 		int height = getSize();
 		int length = getCluster();
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < length; i++) {
 				Circle c = circles.get(j).get(i);
 				if (move) {
-					double destX = x - (length - 1) * RADIUS / 2 + i * RADIUS;
-					double destY = y - (length - 1) * RADIUS + j * RADIUS * 2;
+					double destX = x
+							+ (center ? 0 : - (length - 1) * RADIUS / 2 + i
+									* RADIUS);
+					double destY = y - (height - 1) * RADIUS + j * RADIUS * 2;
 					double dist = c.distFrom(destX, destY);
 					double spd = MIN_SPEED + dist * MAX_SPEED;
 					if (dist <= spd) {
@@ -100,6 +137,13 @@ public class RenderGroup extends Grouping {
 						(int) toPixels(2 * RADIUS), (int) toPixels(2 * RADIUS));
 			}
 		}
+	}
 
+	public void draw(Graphics g, double x, double y, boolean move) {
+		draw(g, x, y, move, false);
+	}
+
+	public void draw(Graphics g, boolean move) {
+		draw(g, x, y, move, false);
 	}
 }
