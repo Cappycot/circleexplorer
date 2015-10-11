@@ -139,6 +139,16 @@ public class RenderGroup extends Grouping {
 		reset(mp);
 	}
 
+	public RenderGroup append(RenderGroup group, MainPanel mp, double mx,
+			double my) {
+		Grouping extra = super.append(group);
+		mp.kill(group);
+		reset(mp);
+		if (extra == null)
+			return null;
+		return new RenderGroup(extra, mx, my);
+	}
+
 	public ArrayList<Circle> kill() {
 		ArrayList<Circle> holder = new ArrayList<Circle>(getTotal());
 		for (ArrayList<Circle> cg : circles)

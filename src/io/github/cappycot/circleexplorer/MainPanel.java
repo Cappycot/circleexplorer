@@ -26,7 +26,7 @@ public class MainPanel extends DontEvenPanel {
 	private volatile double mouseX = 0.0;
 	private volatile double mouseY = 0.0;
 	/* Operation Variables */
-	ArrayList<RenderGroup> groups = new ArrayList<RenderGroup>();
+	private ArrayList<RenderGroup> groups = new ArrayList<RenderGroup>();
 	private RenderGroup selected = null;
 	private boolean outer = false;
 	private RenderGroup holding = null;
@@ -40,7 +40,7 @@ public class MainPanel extends DontEvenPanel {
 	private ArrayList<Circle> graveyard = new ArrayList<Circle>();
 	private ArrayList<Color> gravecolors = new ArrayList<Color>();
 	private ArrayList<Double> gravetimes = new ArrayList<Double>();
-	private static double decayBase = 0.02;
+	private static double decayBase = 0.01;
 	private static double decayRate = 0.0001;
 
 	/* Main Constructor */
@@ -139,8 +139,8 @@ public class MainPanel extends DontEvenPanel {
 		if (mousePress) {
 			if (holding == null && selected != null) {
 				holding = selected;
-				groups.remove(holding);
-				groups.add(holding);
+				if (groups.remove(holding))
+					groups.add(holding);
 				carry = !outer;
 				if (!carry) {
 					xDir = (int) ((mx - holding.getX()) / Math.abs(holding
@@ -158,10 +158,11 @@ public class MainPanel extends DontEvenPanel {
 			if (holding != null) {
 				if (selected != null) {
 					if (outer) {
-
-					} else {
+						RenderGroup rg = selected.append(holding, this, mx, my);
+						if (rg != null)
+							groups.add(rg);
+					} else
 						selected.merge(holding, this);
-					}
 				}
 				holding = null;
 				selected = null;
@@ -183,8 +184,9 @@ public class MainPanel extends DontEvenPanel {
 		}
 		// Render Graveyard.
 		for (int i = graveyard.size() - 1; i >= 0; i--) {
-			gravetimes.set(i, gravetimes.get(i) - decayBase - decayRate
-					* graveyard.size());
+			if (timerPaint)
+				gravetimes.set(i, gravetimes.get(i) - decayBase - decayRate
+						* graveyard.size());
 			double life = gravetimes.get(i);
 			if (life <= 0) {
 				graveyard.remove(i);
@@ -205,7 +207,13 @@ public class MainPanel extends DontEvenPanel {
 			}
 		}
 		// Render RenderGroups.
-		for (RenderGroup rg : groups) {
+		for (int i = 0; i < groups.size(); i++) {
+			RenderGroup rg = groups.get(i);
+			if (rg.getTotal() <= 0) {
+				groups.remove(i);
+				i -= 2;
+				continue;
+			}
 			if (rg == holding && carry) {
 				rg.move(mx, my);
 				rg.draw(g, mx, my, timerPaint, false, false, true);
